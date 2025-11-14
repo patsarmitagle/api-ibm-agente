@@ -1,0 +1,7 @@
+FastAPI
+uvicorn
+pandas
+openpyxl
+python-dotenv
+requests
+twilio
