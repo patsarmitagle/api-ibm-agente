@@ -1,0 +1,231 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "BeClever API",
+    "description": "API para consultar datos y documentos.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/filter/{id}": {
+      "get": {
+        "summary": "Filter Data",
+        "description": "Devuelve la fila del CSV donde 'num_identificacion' coincida con el id.\n- 'id' (obligatorio): Refiere al número de identificación o documento de identidad a buscar.\n- 'number' (opcional): Número adicional a considerar (p. ej., celular).\n- 'csv_path' (opcional): Ruta del CSV a usar.\n\nReturns:\n    dict: Fila encontrada como diccionario, o mensaje si no se encuentra.",
+        "operationId": "filter_data_filter__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true,
+              "title": "Number"
+            }
+          },
+          {
+            "name": "csv_path",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true,
+              "title": "Csv Path"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilterResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/append": {
+      "post": {
+        "summary": "Append Row",
+        "description": "Recibe un registro (de la otra app) y lo agrega como nueva fila al CSV, mapeando 'num_telefono' -> 'celular_1' y respetando el encabezado original.",
+        "operationId": "append_row_append_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntradaCampania"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EntradaCampania": {
+        "type": "object",
+        "title": "EntradaCampania",
+        "properties": {
+          "num_telefono": { "type": "string", "title": "Num Telefono" },
+          "tipo_id": { "type": "string", "title": "Tipo Id" },
+          "num_identificacion": { "type": "string", "title": "Num Identificacion" },
+          "nombre_completo": { "type": "string", "title": "Nombre Completo" },
+          "nombres": { "type": "string", "title": "Nombres" },
+          "primer_apellido": { "type": "string", "title": "Primer Apellido" },
+          "segundo_apellido": { "type": "string", "title": "Segundo Apellido" },
+          "fecha_nacimiento": { "type": "string", "title": "Fecha Nacimiento" },
+          "genero_cliente": { "type": "string", "title": "Genero Cliente" },
+          "edad": { "type": "string", "title": "Edad" },
+          "grupo_pad": { "type": "string", "title": "Grupo Pad" },
+          "cod_ciudad": { "type": "string", "title": "Cod Ciudad" },
+          "ciudad": { "type": "string", "title": "Ciudad" },
+          "cod_depto": { "type": "string", "title": "Cod Depto" },
+          "departamento": { "type": "string", "title": "Departamento" },
+          "productos_aprob": { "type": "string", "title": "Productos Aprob" },
+          "disponible": { "type": "string", "title": "Disponible" },
+          "gastos_fliar": { "type": "string", "title": "Gastos Fliar" },
+          "disponible_pp": { "type": "string", "title": "Disponible Pp" },
+          "plazo_pp": { "type": "string", "title": "Plazo Pp" },
+          "tasa_pp": { "type": "string", "title": "Tasa Pp" },
+          "monto_pp": { "type": "string", "title": "Monto Pp" },
+          "cuota_pp": { "type": "string", "title": "Cuota Pp" },
+          "Monto_Lbz_60": { "type": "string", "title": "Monto Lbz 60" },
+          "Monto_Lbz_72": { "type": "string", "title": "Monto Lbz 72" },
+          "Monto_Lbz_84": { "type": "string", "title": "Monto Lbz 84" },
+          "Monto_Lbz_96": { "type": "string", "title": "Monto Lbz 96" },
+          "Cuota_Lbz_60": { "type": "string", "title": "Cuota Lbz 60" },
+          "Cuota_Lbz_72": { "type": "string", "title": "Cuota Lbz 72" },
+          "Cuota_Lbz_84": { "type": "string", "title": "Cuota Lbz 84" },
+          "Cuota_Lbz_96": { "type": "string", "title": "Cuota Lbz 96" },
+          "id_cliente": {
+            "type": "string",
+            "nullable": true,
+            "title": "Id Cliente"
+          }
+        },
+        "required": [
+          "num_telefono",
+          "tipo_id",
+          "num_identificacion",
+          "nombre_completo",
+          "nombres",
+          "primer_apellido",
+          "segundo_apellido",
+          "fecha_nacimiento",
+          "genero_cliente",
+          "edad",
+          "grupo_pad",
+          "cod_ciudad",
+          "ciudad",
+          "cod_depto",
+          "departamento",
+          "productos_aprob",
+          "disponible",
+          "gastos_fliar",
+          "disponible_pp",
+          "plazo_pp",
+          "tasa_pp",
+          "monto_pp",
+          "cuota_pp",
+          "Monto_Lbz_60",
+          "Monto_Lbz_72",
+          "Monto_Lbz_84",
+          "Monto_Lbz_96",
+          "Cuota_Lbz_60",
+          "Cuota_Lbz_72",
+          "Cuota_Lbz_84",
+          "Cuota_Lbz_96"
+        ]
+      },
+      "HTTPValidationError": {
+        "type": "object",
+        "title": "HTTPValidationError",
+        "properties": {
+          "detail": {
+            "type": "array",
+            "title": "Detail",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "title": "ValidationError",
+        "required": ["loc", "msg", "type"],
+        "properties": {
+          "loc": {
+            "type": "array",
+            "title": "Location",
+            "items": { "type": "string" }
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        }
+      },
+      "FilterResponse": {
+        "type": "object",
+        "description": "Fila encontrada como diccionario, o mensaje si no se encuentra.",
+        "additionalProperties": true
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "description": "Respuesta exitosa genérica.",
+        "properties": {}
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "poner_aqui_la_url_de_tu_api",
+      "description": "Base URL for the BeClever API"
+    }
+  ]
+}
